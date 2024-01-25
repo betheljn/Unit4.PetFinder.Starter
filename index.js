@@ -4,48 +4,45 @@ const pets = require('./data');
 // init express app
 const express = require('express');
 const app = express();
-
 const PORT = 8080;
 
 // GET - / - returns homepage
-app.get('/', (req, res) => {
-    // serve up the public folder as static index.html file
+// Serve the client homepage that renders the data in the browser.
+app.get("/", (req, res) => {
+    res.send("HomePage");
+})
 
-});
 
 // hello world route
 app.get('/api', (req, res) => {
     res.send('Hello World!');
 });
 
+// GET - all pets
 // get all pets from the database
 app.get('/api/v1/pets', (req, res) => {
+    res.send(pets); 
     // send the pets array as a response
 
 });
 
-// get pet by owner with query string
+// GET - pet by owner name -
+// Retrieve a single pet from the database by owner's name using a query string.
 app.get('/api/v1/pets/owner', (req, res) => {
-    // get the owner from the request
-
-
     // find the pet in the pets array
-    const pet = pets.find(pet => pet.owner === owner);
-
+const pet = pets.find(pet => pet.owner === req.query.owner);
     // send the pet as a response
-
+res.send(pet)
 });
 
-// get pet by name
+// Get = pet by id -
+// Retrieve a single pet from the database by name parameter.
 app.get('/api/v1/pets/:name', (req, res) => {
     // get the name from the request
-
-
     // find the pet in the pets array
-    const pet = pets.find(pet => pet.name === name);
-
-    // send the pet as a response
-
+const pet = pets.find(pet => pet.name === req.params.name);
+// send the pet as a response
+res.send(pet)
 });
 
 app.listen(PORT, () => {
